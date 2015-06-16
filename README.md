@@ -1,6 +1,9 @@
 # OctoPrint-OctoPi
 
-**TODO:** Describe what your plugin does.
+Display information about the OctoPi environment in the settings dialog of OctoPrint.
+
+In the current version this encompasses the detected OctoPi version and commit and the
+current IPs of the OctoPi system.
 
 ## Setup
 
@@ -9,9 +12,3 @@ or manually using this URL:
 
     https://github.com/OctoPrint/OctoPrint-OctoPi/archive/master.zip
 
-**TODO:** Describe how to install your plugin, if more needs to be done than just installing it via pip or through
-the plugin manager.
-
-## Configuration
-
-**TODO:** Describe your plugin's configuration options (if any).
