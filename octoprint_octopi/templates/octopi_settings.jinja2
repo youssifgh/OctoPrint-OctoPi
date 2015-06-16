@@ -1,0 +1,14 @@
+<dl>
+    <dt>{{ _('OctoPi version') }}</dt>
+    <dd data-bind="text: octopi_version"></dd>
+
+    <dt>{{ _('OctoPi commit') }}</dt>
+    <dd data-bind="text: octopi_commit"></dd>
+
+    <dt>{{ _('Current IPs') }}</dt>
+    <dd>
+        <ul data-bind="foreach: octopi_ips">
+            <li data-bind="text: $data"></li>
+        </ul>
+    </dd>
+</dl>
