@@ -54,22 +54,17 @@ def __plugin_check__():
 	import logging
 	logger = logging.getLogger("octoprint.plugins.octopi")
 
-	#if not sys.platform == "linux2":
-	#	logger.warn("Linux platform expected, not {}, disabling plugin".format(sys.platform))
-	#	return False
+	if not sys.platform == "linux2":
+		logger.warn("Linux platform expected, not {}, disabling plugin".format(sys.platform))
+		return False
 
-	#if not os.path.exists("/etc/octopi_version"):
-	#	logger.warn("/etc/octopi_version does not exist, this is not an OctoPi installation, disabling plugin")
-	#	return False
+	if not os.path.exists("/etc/octopi_version"):
+		logger.warn("/etc/octopi_version does not exist, this is not an OctoPi installation, disabling plugin")
+		return False
 
 	return True
 
 def __plugin_load__():
 	global __plugin_implementation__
 	__plugin_implementation__ = OctopiPlugin()
-
-	# global __plugin_hooks__
-	# __plugin_hooks__ = {
-	#    "some.octoprint.hook": __plugin_implementation__.some_hook_handler
-	# }
 
