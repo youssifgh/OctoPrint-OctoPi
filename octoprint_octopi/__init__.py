@@ -21,7 +21,8 @@ class OctopiPlugin(octoprint.plugin.TemplatePlugin,
 		return flask.jsonify(dict(
 			version=self._get_octopi_version(),
 			commit=self._get_octopi_commit(),
-			ips=self._get_octopi_ips()
+			ips=self._get_octopi_ips(),
+			hardware=self._get_octopi_hardware()
 		))
 
 	def _get_octopi_version(self):
@@ -35,7 +36,7 @@ class OctopiPlugin(octoprint.plugin.TemplatePlugin,
 		if os.path.exists(path):
 			try:
 				with open(path, "r") as f:
-					return f.readline()
+					return f.readlines()
 			except:
 				self._logger.exception("Exception while reading {path}".format(**locals()))
 		return default
@@ -44,6 +45,45 @@ class OctopiPlugin(octoprint.plugin.TemplatePlugin,
 		from octoprint.util import interface_addresses
 		import socket
 		return sorted(filter(lambda x: x != "127.0.0.1", interface_addresses()), key=lambda x: socket.inet_aton(x))
+
+	def _get_octopi_hardware(self):
+		cpuinfo = self._get_file_contents("/proc/cpuinfo")
+		if cpuinfo is None:
+			return None
+
+		interesting_keys = ("hardware", "revision", "serial")
+		split_info = map(lambda x: x.strip(), cpuinfo.split("\n"))
+		parsed = {key.lower(): value for key, value in map(lambda x: map(lambda y: y.strip(), x.split(":", 1)), split_info) if key.lower() in interesting_keys}
+
+		model = "unknown"
+		revision = parsed["revision"] if "revision" in parsed else "unknown"
+
+		# revision mapping from http://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/
+		if revision in ("0002"):
+			model = "Raspberry Pi B Revision 1.0, 256MB RAM"
+		elif revision in ("0003"):
+			model = "Raspberry Pi B Revision 1.0 + ECN0001, 256 MB RAM"
+		elif revision in ("0004", "0005", "0006"):
+			model = "Raspberry Pi B Revision 2.0, 256 MB RAM"
+		elif revision in ("0007", "0008", "0009"):
+			model = "Raspberry Pi A, 256 MB RAM"
+		elif revision in ("000d", "000e", "000f"):
+			model = "Raspberry Pi B Revision 2.0, 512 MB RAM"
+		elif revision in ("0010"):
+			model = "Raspberry Pi B+, 512 MB RAM"
+		elif revision in ("0011"):
+			model = "Raspberry Pi Compute Module, 512 MB RAM"
+		elif revision in ("0012"):
+			model = "Raspberry Pi A+, 256 MB RAM"
+		elif revision in ("a01041", "a21041"):
+			model = "Raspberry Pi2 B, 1 GB RAM"
+
+		return dict(
+			model=model,
+			revision=revision,
+			chipset_family=parsed["hardware"] if "hardware" in parsed else "unknown",
+			serial=parsed["serial"] if "serial" in parsed else "unknown"
+		)
 
 __plugin_name__ = "OctoPi"
 

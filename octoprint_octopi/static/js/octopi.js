@@ -5,6 +5,7 @@ $(function() {
         self.octopi_version = ko.observable();
         self.octopi_commit = ko.observable();
         self.octopi_ips = ko.observableArray();
+        self.octopi_hardware = ko.observable();
 
         self.requestData = function() {
             $.ajax({
@@ -19,6 +20,7 @@ $(function() {
             self.octopi_version(response.version);
             self.octopi_commit(response.commit);
             self.octopi_ips(response.ips);
+            self.octopi_hardware(response.hardware);
         };
 
         self.onUserLoggedIn = function(user) {

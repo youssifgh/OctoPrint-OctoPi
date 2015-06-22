@@ -11,4 +11,14 @@
             <li data-bind="text: $data"></li>
         </ul>
     </dd>
+
+    <dt>{{ _('Hardware') }}</dt>
+    <dd>
+        <ul>
+            <li>{{ _('Model') }}: <span data-bind="text: octopi_hardware.pi_model"></span></li>
+            <li>{{ _('Chipset family') }}: <span data-bind="text: octopi_hardware.chipset_family"></span></li>
+            <li>{{ _('Revision') }}: <span data-bind="text:octopi_hardware.revision"></span></li>
+            <li>{{ _('Serial') }}: <span data-bind="text: octopi_hardware.serial"></span></li>
+        </ul>
+    </dd>
 </dl>
