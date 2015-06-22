@@ -26,10 +26,10 @@ class OctopiPlugin(octoprint.plugin.TemplatePlugin,
 		))
 
 	def _get_octopi_version(self):
-		return self._get_file_contents("/etc/octopi_version", "unknown")
+		return self._get_file_contents("/etc/octopi_version", ["unknown"])[0]
 
 	def _get_octopi_commit(self):
-		return self._get_file_contents("/etc/octopi_commit", "unknown")
+		return self._get_file_contents("/etc/octopi_commit", ["unknown"])[0]
 
 	def _get_file_contents(self, path, default=None):
 		import os
@@ -52,8 +52,7 @@ class OctopiPlugin(octoprint.plugin.TemplatePlugin,
 			return None
 
 		interesting_keys = ("hardware", "revision", "serial")
-		split_info = map(lambda x: x.strip(), cpuinfo.split("\n"))
-		parsed = {key.lower(): value for key, value in map(lambda x: map(lambda y: y.strip(), x.split(":", 1)), split_info) if key.lower() in interesting_keys}
+		parsed = {key.lower(): value for key, value in map(lambda x: map(lambda y: y.strip(), x.split(":", 1)), cpuinfo) if key.lower() in interesting_keys}
 
 		model = "unknown"
 		revision = parsed["revision"] if "revision" in parsed else "unknown"
