@@ -1,3 +1,5 @@
+**STILL IN DEVELOPMENT, NOT FIT FOR GENERAL CONSUMPTION, DO NOT USE IF NOT A DEVELOPER!**
+
 # OctoPrint-OctoPi
 
 Display information about the OctoPi environment in the settings dialog of OctoPrint.
